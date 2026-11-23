@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches: [main, dev]
   workflow_dispatch:
 
 permissions:
@@ -18,23 +18,42 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository
+      - name: Check out main
         uses: actions/checkout@v4
+        with:
+          ref: main
+          path: main
+      - name: Check out dev
+        uses: actions/checkout@v4
+        with:
+          ref: dev
+          path: dev
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
-      - name: Install dependencies
-        run: npm ci
-      - name: Build site
-        run: npm run build
+          cache-dependency-path: |
+            main/package-lock.json
+            dev/package-lock.json
+      - name: Build main
+        working-directory: main
+        run: npm ci && npm run build
+      - name: Build dev
+        working-directory: dev
+        run: npm ci && npm run build
+      - name: Combine sites (main at /, dev at /dev/)
+        run: |
+          mkdir site
+          cp -r main/dist/. site/
+          mkdir site/dev
+          cp -r dev/dist/. site/dev/
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
-      - name: Upload dist
+      - name: Upload site
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: site
 
   deploy:
     environment:
