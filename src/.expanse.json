@@ -151,6 +151,16 @@
           "id": "b55fe1d6-2f20-4240-8680-17087ad3f247",
           "name": "face-camera",
           "parameters": {}
+        },
+        "0ee73e1d-cec0-45dc-94c9-218f06ad411a": {
+          "id": "0ee73e1d-cec0-45dc-94c9-218f06ad411a",
+          "name": "tap-to-place",
+          "parameters": {
+            "shadow": {
+              "type": "entity",
+              "id": "73cd56c0-67c5-4f21-b31c-37d634ba2b12"
+            }
+          }
         }
       },
       "name": "Plano",
@@ -178,14 +188,20 @@
         1
       ],
       "geometry": {
-        "type": "circle",
-        "radius": 0.4
+        "type": "plane",
+        "width": 1,
+        "height": 1
       },
       "material": {
         "type": "unlit",
         "color": "#000000",
-        "opacity": 0.3,
+        "textureSrc": {
+          "type": "asset",
+          "asset": "assets/sombra.png"
+        },
+        "opacity": 0.6,
         "blending": "normal",
+        "forceTransparent": true,
         "depthWrite": false
       },
       "components": {}
