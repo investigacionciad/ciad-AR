@@ -1,5 +1,7 @@
 import * as ecs from '@8thwall/ecs'
 
+const componentCleanups = new Map()
+
 const vertexShader = `
   varying vec2 vUv;
 
@@ -74,6 +76,19 @@ ecs.registerComponent({
       return
     }
 
+    const setVideoPaused = (paused) => {
+      ecs.VideoControls.set(world, component.eid, {paused})
+    }
+
+    const onVisibilityChange = () => setVideoPaused(document.hidden)
+    const onPageHide = () => setVideoPaused(true)
+    const onPageShow = () => setVideoPaused(document.hidden)
+
+    document.addEventListener('visibilitychange', onVisibilityChange)
+    window.addEventListener('pagehide', onPageHide)
+    window.addEventListener('pageshow', onPageShow)
+    setVideoPaused(document.hidden)
+
     const interval = setInterval(() => {
       const videoTexture = findVideoTexture(object)
 
@@ -102,5 +117,21 @@ ecs.registerComponent({
         }
       })
     }, 100)
+
+    componentCleanups.set(component.eid, () => {
+      clearInterval(interval)
+      document.removeEventListener('visibilitychange', onVisibilityChange)
+      window.removeEventListener('pagehide', onPageHide)
+      window.removeEventListener('pageshow', onPageShow)
+    })
+  },
+  remove: (world, component) => {
+    const cleanup = componentCleanups.get(component.eid)
+    if (!cleanup) {
+      return
+    }
+
+    cleanup()
+    componentCleanups.delete(component.eid)
   },
 })
