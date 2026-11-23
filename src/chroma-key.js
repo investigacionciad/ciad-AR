@@ -87,7 +87,9 @@ ecs.registerComponent({
     document.addEventListener('visibilitychange', onVisibilityChange)
     window.addEventListener('pagehide', onPageHide)
     window.addEventListener('pageshow', onPageShow)
-    setVideoPaused(document.hidden)
+    if (document.hidden) {
+      setVideoPaused(true)
+    }
 
     const interval = setInterval(() => {
       const videoTexture = findVideoTexture(object)
