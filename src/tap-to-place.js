@@ -29,12 +29,12 @@ ecs.registerComponent({
     }
 
     const onTracking = (event) => {
-      const visible = event.data.status === 'NORMAL'
+      const lost = event.data.reason === 'TOO_MUCH_MOTION' || event.data.reason === 'RELOCALIZING'
       for (const target of [eid, shadow]) {
-        if (visible) {
-          ecs.Hidden.remove(world, target)
-        } else {
+        if (lost) {
           ecs.Hidden.set(world, target)
+        } else {
+          ecs.Hidden.remove(world, target)
         }
       }
     }
