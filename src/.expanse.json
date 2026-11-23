@@ -126,7 +126,7 @@
         },
         "opacity": 1,
         "blending": "no",
-        "side": "double",
+        "side": "front",
         "depthTest": false,
         "depthWrite": false,
         "opacityMap": null,
