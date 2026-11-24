@@ -63,10 +63,33 @@ ecs.registerComponent({
     }
 
     const onFrame = (time, frame) => {
-      if (!grabbing) {
+      if (!session) {
         return
       }
       session.requestAnimationFrame(onFrame)
+
+      const dt = lastTime ? (time - lastTime) / 1000 : 0
+      lastTime = time
+
+      for (const source of session.inputSources) {
+        const axes = source.gamepad ? source.gamepad.axes : []
+        if (axes.length < 4) {
+          continue
+        }
+
+        if (Math.abs(axes[2]) > ZONA_MUERTA) {
+          world.transform.rotateSelf(eid, ecs.math.quat.yRadians(-axes[2] * 2 * dt))
+        }
+
+        if (source === grabbing && Math.abs(axes[3]) > ZONA_MUERTA) {
+          scale = Math.min(1, Math.max(0.1, scale * Math.exp(-axes[3] * dt)))
+          world.setScale(eid, scale, scale, scale)
+        }
+      }
+
+      if (!grabbing) {
+        return
+      }
 
       const space = grabbing.gripSpace || grabbing.targetRaySpace
       if (!getPointer(frame, space)) {
@@ -75,19 +98,6 @@ ecs.registerComponent({
 
       hit.copy(offset).applyMatrix4(pointer)
       world.setPosition(eid, hit.x, world.transform.getLocalPosition(eid).y, hit.z)
-
-      const axes = grabbing.gamepad ? grabbing.gamepad.axes : []
-      const dt = lastTime ? (time - lastTime) / 1000 : 0
-      lastTime = time
-
-      if (axes.length >= 4 && Math.abs(axes[2]) > ZONA_MUERTA) {
-        world.transform.rotateSelf(eid, ecs.math.quat.yRadians(-axes[2] * 2 * dt))
-      }
-
-      if (axes.length >= 4 && Math.abs(axes[3]) > ZONA_MUERTA) {
-        scale = Math.min(1, Math.max(0.1, scale * Math.exp(-axes[3] * dt)))
-        world.setScale(eid, scale, scale, scale)
-      }
     }
 
     const onSqueezeStart = (event) => {
@@ -103,8 +113,6 @@ ecs.registerComponent({
       const position = world.transform.getWorldPosition(eid)
       offset.set(position.x, position.y, position.z).applyMatrix4(inverse.copy(pointer).invert())
       grabbing = event.inputSource
-      lastTime = 0
-      session.requestAnimationFrame(onFrame)
     }
 
     const onSqueezeEnd = (event) => {
@@ -118,6 +126,8 @@ ecs.registerComponent({
       session.addEventListener('select', onSelect)
       session.addEventListener('squeezestart', onSqueezeStart)
       session.addEventListener('squeezeend', onSqueezeEnd)
+      lastTime = 0
+      session.requestAnimationFrame(onFrame)
     }
 
     const onSessionEnd = () => {
