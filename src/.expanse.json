@@ -198,11 +198,6 @@
         }
       },
       "components": {
-        "6f1add6e-8d97-4aa1-8ae2-d6b5b1a398d0": {
-          "id": "6f1add6e-8d97-4aa1-8ae2-d6b5b1a398d0",
-          "name": "mirar-camara",
-          "parameters": {}
-        },
         "62db4312-9865-4fc7-ab06-42e4678255fc": {
           "id": "62db4312-9865-4fc7-ab06-42e4678255fc",
           "name": "colocar-con-control",
