@@ -32,7 +32,7 @@
       "camera": {
         "type": "perspective",
         "xr": {
-          "desktop": "disabled",
+          "desktop": "3D",
           "xrCameraType": "world",
           "headset": "AR",
           "phone": "AR"
@@ -136,7 +136,7 @@
         "loop": true,
         "paused": false,
         "speed": 1,
-        "positional": true
+        "positional": false
       },
       "parentId": "88453035-dc0f-486d-868a-8ff7c2fda864",
       "components": {
