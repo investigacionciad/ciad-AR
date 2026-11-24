@@ -42,12 +42,14 @@ jobs:
       - name: Build dev
         working-directory: dev
         run: npm ci && npm run build
-      - name: Combine sites (main at /, dev at /dev/)
+      - name: Combine sites (main at /, dev at /dev/, each also at 3d/)
         run: |
           mkdir site
           cp -r main/dist/. site/
+          cp -r main/dist site/3d
           mkdir site/dev
           cp -r dev/dist/. site/dev/
+          cp -r dev/dist site/dev/3d
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
       - name: Upload site

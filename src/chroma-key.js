@@ -76,8 +76,16 @@ ecs.registerComponent({
       return
     }
 
+    let video = null
+
     const setVideoPaused = (paused) => {
       ecs.VideoControls.set(world, component.eid, {paused})
+    }
+
+    const playVideo = () => {
+      if (video && video.paused && !document.hidden) {
+        video.play().catch(() => {})
+      }
     }
 
     const onVisibilityChange = () => setVideoPaused(document.hidden)
@@ -87,6 +95,7 @@ ecs.registerComponent({
     document.addEventListener('visibilitychange', onVisibilityChange)
     window.addEventListener('pagehide', onPageHide)
     window.addEventListener('pageshow', onPageShow)
+    window.addEventListener('touchend', playVideo)
     if (document.hidden) {
       setVideoPaused(true)
     }
@@ -99,6 +108,7 @@ ecs.registerComponent({
       }
 
       clearInterval(interval)
+      video = videoTexture.image
 
       const {threshold} = component.schemaAttribute.get(component.eid)
       object.traverse((child) => {
@@ -125,6 +135,7 @@ ecs.registerComponent({
       document.removeEventListener('visibilitychange', onVisibilityChange)
       window.removeEventListener('pagehide', onPageHide)
       window.removeEventListener('pageshow', onPageShow)
+      window.removeEventListener('touchend', playVideo)
     })
   },
   remove: (world, component) => {
