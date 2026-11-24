@@ -3,14 +3,10 @@ import * as ecs from '@8thwall/ecs'
 const cleanups = new Map()
 
 ecs.registerComponent({
-  name: 'tap-to-place',
-  schema: {
-    shadow: ecs.eid,
-  },
+  name: 'tocar-para-colocar',
   add: (world, component) => {
     const THREE = window.THREE
     const {eid} = component
-    const {shadow} = component.schemaAttribute.get(eid)
     const raycaster = new THREE.Raycaster()
     const floor = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0)
     const hit = new THREE.Vector3()
@@ -25,17 +21,14 @@ ecs.registerComponent({
 
       const height = world.transform.getLocalPosition(eid).y
       world.setPosition(eid, hit.x, height, hit.z)
-      world.setPosition(shadow, hit.x, 0.01, hit.z)
     }
 
     const onTracking = (event) => {
       const lost = event.data.reason === 'TOO_MUCH_MOTION' || event.data.reason === 'RELOCALIZING'
-      for (const target of [eid, shadow]) {
-        if (lost) {
-          ecs.Hidden.set(world, target)
-        } else {
-          ecs.Hidden.remove(world, target)
-        }
+      if (lost) {
+        ecs.Hidden.set(world, eid)
+      } else {
+        ecs.Hidden.remove(world, eid)
       }
     }
 
