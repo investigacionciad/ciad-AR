@@ -12,7 +12,12 @@ ecs.registerComponent({
     const hit = new THREE.Vector3()
 
     const onTouch = (event) => {
-      const {x, y} = event.data.position
+      const {position, start} = event.data
+      if (Math.hypot(position.x - start.x, position.y - start.y) > 0.03) {
+        return
+      }
+
+      const {x, y} = position
       raycaster.setFromCamera({x: x * 2 - 1, y: 1 - y * 2}, world.three.activeCamera)
 
       if (!raycaster.ray.intersectPlane(floor, hit) || hit.distanceTo(raycaster.ray.origin) > 10) {
@@ -32,11 +37,11 @@ ecs.registerComponent({
       }
     }
 
-    world.events.addListener(world.events.globalId, ecs.input.SCREEN_TOUCH_START, onTouch)
+    world.events.addListener(world.events.globalId, ecs.input.SCREEN_TOUCH_END, onTouch)
     world.events.addListener(world.events.globalId, ecs.events.REALITY_TRACKING_STATUS, onTracking)
 
     cleanups.set(eid, () => {
-      world.events.removeListener(world.events.globalId, ecs.input.SCREEN_TOUCH_START, onTouch)
+      world.events.removeListener(world.events.globalId, ecs.input.SCREEN_TOUCH_END, onTouch)
       world.events.removeListener(world.events.globalId, ecs.events.REALITY_TRACKING_STATUS, onTracking)
     })
   },

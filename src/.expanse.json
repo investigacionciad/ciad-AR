@@ -161,7 +161,7 @@
           "id": "06837360-9f8c-408a-addd-17cf6110aaf6",
           "name": "mostrar-en",
           "parameters": {
-            "visor": false
+            "modo": "video"
           }
         }
       },
@@ -207,8 +207,18 @@
           "id": "da3e0241-ec5a-4c43-b650-1078dff410b3",
           "name": "mostrar-en",
           "parameters": {
-            "visor": true
+            "modo": "3d"
           }
+        },
+        "c97980fb-4738-4fad-8678-6dd1ce08bda6": {
+          "id": "c97980fb-4738-4fad-8678-6dd1ce08bda6",
+          "name": "tocar-para-colocar",
+          "parameters": {}
+        },
+        "d176e23e-350e-44d3-8355-82cf668a2dd1": {
+          "id": "d176e23e-350e-44d3-8355-82cf668a2dd1",
+          "name": "gestos-tactiles",
+          "parameters": {}
         }
       }
     }

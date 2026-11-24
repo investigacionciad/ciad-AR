@@ -1,15 +1,15 @@
 import * as ecs from '@8thwall/ecs'
 
-const esVisor = /oculus|quest/i.test(navigator.userAgent)
+const modoActual = location.pathname.split('/').includes('3d') ? '3d' : 'video'
 
 ecs.registerComponent({
   name: 'mostrar-en',
   schema: {
-    visor: ecs.boolean,
+    modo: ecs.string,
   },
   add: (world, component) => {
     const {eid} = component
-    if (component.schemaAttribute.get(eid).visor !== esVisor) {
+    if (component.schemaAttribute.get(eid).modo !== modoActual) {
       setTimeout(() => world.deleteEntity(eid))
     }
   },
