@@ -156,6 +156,13 @@
           "id": "0ee73e1d-cec0-45dc-94c9-218f06ad411a",
           "name": "tocar-para-colocar",
           "parameters": {}
+        },
+        "06837360-9f8c-408a-addd-17cf6110aaf6": {
+          "id": "06837360-9f8c-408a-addd-17cf6110aaf6",
+          "name": "mostrar-en",
+          "parameters": {
+            "visor": false
+          }
         }
       },
       "name": "Plano",
@@ -167,7 +174,7 @@
       "parentId": "88453035-dc0f-486d-868a-8ff7c2fda864",
       "order": 2.8,
       "position": [
-        1.2,
+        0,
         0,
         2.5
       ],
@@ -195,6 +202,18 @@
           "id": "6f1add6e-8d97-4aa1-8ae2-d6b5b1a398d0",
           "name": "mirar-camara",
           "parameters": {}
+        },
+        "62db4312-9865-4fc7-ab06-42e4678255fc": {
+          "id": "62db4312-9865-4fc7-ab06-42e4678255fc",
+          "name": "tocar-para-colocar",
+          "parameters": {}
+        },
+        "da3e0241-ec5a-4c43-b650-1078dff410b3": {
+          "id": "da3e0241-ec5a-4c43-b650-1078dff410b3",
+          "name": "mostrar-en",
+          "parameters": {
+            "visor": true
+          }
         }
       }
     }
