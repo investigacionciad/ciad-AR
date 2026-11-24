@@ -34,7 +34,7 @@
         "xr": {
           "desktop": "disabled",
           "xrCameraType": "world",
-          "headset": "disabled",
+          "headset": "AR",
           "phone": "AR"
         }
       },
