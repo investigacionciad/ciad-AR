@@ -28,21 +28,10 @@ ecs.registerComponent({
       world.setPosition(eid, hit.x, height, hit.z)
     }
 
-    const onTracking = (event) => {
-      const lost = event.data.reason === 'TOO_MUCH_MOTION' || event.data.reason === 'RELOCALIZING'
-      if (lost) {
-        ecs.Hidden.set(world, eid)
-      } else {
-        ecs.Hidden.remove(world, eid)
-      }
-    }
-
     world.events.addListener(world.events.globalId, ecs.input.SCREEN_TOUCH_END, onTouch)
-    world.events.addListener(world.events.globalId, ecs.events.REALITY_TRACKING_STATUS, onTracking)
 
     cleanups.set(eid, () => {
       world.events.removeListener(world.events.globalId, ecs.input.SCREEN_TOUCH_END, onTouch)
-      world.events.removeListener(world.events.globalId, ecs.events.REALITY_TRACKING_STATUS, onTracking)
     })
   },
   remove: (world, component) => {
